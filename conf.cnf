@@ -1,0 +1,6 @@
+# my.cnf
+[client]
+database = projeto_agoravai
+user = root
+password = ''
+default-character-set = utf8

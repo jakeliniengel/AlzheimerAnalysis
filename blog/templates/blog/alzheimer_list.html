@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+{% block title %}Exames{% endblock %}
+{% block content %}
+<div class="resultados">
+	<h2>Exames submetidos para segmentação</h2>
+</div>
+<div class="container ">
+		<div class="row">
+			{% for post in alzheimer %}
+				<div class="card-body seg">
+					<h5 class="card-title">{{ post.nome }}</h5>
+						<p>Nome do arquivo criado: {{post.imagem}}</p>
+						<p>
+						<a href="{{post.imagem}}" class="btn btn-primary" download>Download do arquivo </a>
+						{% if  post.status_seg == '2' %}
+							<a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-success">Ver Resultado</a>
+						{% elif post.status_seg == '1' %}
+							<span class="btn btn-warning">Processando</span>
+					  {% elif post.status_seg == '0' %}
+							<span class="btn btn-danger">Erro</span>
+						{% endif %}
+							<span class="publicacao">Criado em {{ post.created_at }} por {{ post.autor }}</span>
+						</p>
+					</div>
+			{% endfor %}
+		</div>
+	</div>
+
+{% endblock %}

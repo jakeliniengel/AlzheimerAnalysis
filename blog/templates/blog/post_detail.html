@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+{% block title %}{{ post.nome }}{% endblock %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <h1>{{ post.nome }}</h1>
+        <iframe src="{% static 'media/ADNI_002_S_0413_MR_MP_RAGE__br_raw_20070602193540694_1_S32938_I55771.pdf' %}" width="100%" height="780" style="border: none;">
+        </iframe>
+    </div>
+{% endblock %}

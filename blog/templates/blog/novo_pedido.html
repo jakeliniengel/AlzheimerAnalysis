@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+{% block title %}Exames{% endblock %}
+{% block content %}
+<div class="container inserir_pedido">
+	<h2>Inserir arquivo para avaliação</h2>
+	<div>
+		<form action="." method="POST" enctype="multipart/form-data" class="pedido">
+			{% csrf_token %}
+			{{ form }}
+			<p>
+				<input type="submit" class="btn btn-primary" value="Criar">
+			</p>
+		</form>
+	</div>
+
+</div>
+{% endblock %}

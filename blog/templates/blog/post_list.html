@@ -1,0 +1,34 @@
+{% extends 'blog/base.html' %}
+{% block title %}Listagem de Pedidos{% endblock %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+
+  <h1 class="display-4">Alzheimer Analysis!</h1>
+  <p class="lead">Ferramenta web para análise de imagens (Ressonância Magnética - DICOM) do encéfalo. 
+  Cujo objetivo é averiguar se o paciente tem características na massa encefálica 
+  que evidenciam a Doença de Alzheimer</p>
+
+</div>
+  <!--
+<div class="container pag">
+        <div class="row">
+                {% for post in alzheimer %}
+            <div class="col">
+              <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="https://via.placeholder.com/286x180" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">{{ post.nome }}</h5>
+                            <p class="card-text">{{ post.body|truncatechars:50 }}...</p>
+                            <a href="{{post.imagem}}" download>{{post.imagem}}</a>
+                            <p>Criado em {{ post.created_at }} por {{ post.autor }}</p>
+                  <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-primary">Ver o post completo</a>
+                </div>
+              </div>
+                </div>
+                {% endfor %}
+        </div>
+    </div>
+
+
+-->
+{% endblock %}

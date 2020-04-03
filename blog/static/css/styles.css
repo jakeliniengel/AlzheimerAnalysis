@@ -1,0 +1,236 @@
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.col {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.navbar {
+	background-color: #07468a;
+}
+
+.navbar .navbar-brand {
+	color: #fff;
+}
+
+.navbar .navbar-brand:hover {
+	font-weight: bold;
+	color: #fff;
+}
+
+.navbar .nav-item .nav-link {
+	color: #fff;
+	transition: .5s;
+}
+
+.navbar .nav-item .nav-link:hover {
+	background-color: #FFF;
+	color:#07468a;
+}
+
+.card {
+	margin: auto;
+	border-radius: 0;
+}
+
+.card-img-top {
+	border-radius: 0;
+}
+
+.card .btn-primary {
+	background-color: #07468a;
+	border-color: #07468a;
+}
+
+.card .btn-primary:hover {
+	background-color: #FFF;
+	color: #fff;
+}
+
+.row .jumbotron {
+	background-image: url(../img/logo.jpg);
+	background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+	height: 100vh;
+	padding: 0px !important;
+	margin: 0px !important;
+	width: 100vw;
+
+}
+
+.card .btn.btn-primary {
+	margin: auto;
+	display: block;
+}
+/*Color*/
+.white{
+	color: #ffffff82;
+}
+.pag{
+	width: 100vw;
+	height: 100vh;
+}
+.display-4{
+	color: #fff;
+	text-align: center;
+}
+.lead{
+    color: #ffffffcb;
+    width: 33%;
+    text-align: justify;
+    padding: 19px;
+    margin-left: 19px;
+    bottom: 0;
+    background-color: #04445d7a;
+}
+h1{
+	width: 100%;
+	padding: 3%;
+	text-align: center;
+}
+.sobre{
+	padding: 20px;
+}
+.card{
+	background: #dae0e5 !important;
+	width: 96%;
+	color: #07468a;
+	/*margin-top: 5%;*/
+}
+.autores{
+	width: 100vw;
+    height: 100vh;
+    align-content: center;
+    height: 100%;
+    left: 230px;
+    align-items: center;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.autor{
+	padding: 40px 10px 40px 10px;
+	margin: 2%;
+	width: 30%;
+	height: 35%;
+	background: #343a40;
+	text-align: center;
+	color: #f8f9fa;
+	border-radius: 5%;
+}
+.autor img{
+	border-radius: 50%;
+	background-size: cover;
+	height: 200px;
+	width: 200px;
+	padding-bottom: 10px;
+}
+
+.fa-instagram{
+	color: #f25fc3 ;
+	margin:8px;
+	font-size: 25px;
+	cursor: pointer;
+}
+.fa-facebook-f{
+	color:#6091ce ;
+	margin:8px;
+	font-size: 25px;
+	cursor: pointer;
+}
+.fa-at{
+	color: #b84135;
+	margin:8px;
+	font-size: 25px;
+	cursor: pointer;
+}
+.fa-linkedin{
+	color: #0077b5;
+	margin:8px;
+	font-size: 25px;
+	cursor: pointer;
+}
+.login{
+    color: white;
+    width: 400;
+    height: 398px;
+    background-color: #2f2f2f;
+    margin: -70px 0 0 -120px;
+    position: absolute;
+    top: 32%;
+    left: 41%;
+    padding: 10%;
+    margin-bottom: 50px;
+}
+.login input{
+	width: 250px;
+	display: block;
+	padding: 5px;
+}
+.login label{
+	width: 100px;
+	display: block;
+}
+form{
+	position: relative;
+	height: 200px;
+	width: 60%;
+	margin: 0 auto;
+	padding: 20px;
+	resize: both;
+}
+.btn{
+	margin-top: 38px !important;
+}
+.logged-in-p{
+	color: #FFF;
+	background-color:#07468a;
+	width: 100%;
+	text-align: end;
+	padding: 0px 35px 10px 0px;
+	margin: 0px 0px 0px 0px;
+}
+.inserir_pedido{
+	width: 100%;
+	height: 100vh;
+	margin: 8%;
+	padding:2%;
+	min-height: 300px;
+	background-color: #f2f2f2;
+	color: #07468a;
+}
+.inserir_pedido h2{
+	text-align: center;
+}
+.seg{
+	background-color: #f2f2f2;
+	margin-bottom: 15px;
+}
+.publicacao{
+	margin-top: 44px;
+	float: right;
+}
+.pedido label{
+	width: 100%;
+}
+.pedido input{
+	padding: 5px;
+	width: 80%;
+}
+.pedido .btn{
+	margin-top: 15px;
+}
+.resultados{
+	text-align: center;
+	width: 100%;
+}
+.resultados h2{
+	color: #07468a;
+	margin: 5%;
+}
