@@ -36,11 +36,11 @@ def post_create(request):
         if(form.is_valid()):
             post_nome = form.cleaned_data['nome']
             post_imagem = form.cleaned_data['imagem']
-            post_slug = form.cleaned_data['slug']
+            #post_slug = form.cleaned_data['slug']
             post_idade = form.cleaned_data['idade']
             post_sexo = form.cleaned_data['sexo']
             post_autor = form.cleaned_data['autor']
-            new_post = Alzheimer(nome=post_nome, imagem=post_imagem, slug=post_slug, idade=post_idade,  sexo=post_sexo, autor=post_autor)
+            new_post = Alzheimer(nome=post_nome, imagem=post_imagem, idade=post_idade,  sexo=post_sexo, autor=post_autor)
             new_post.save()
             return redirect('blog:alzheimer_list')
     return render(request, 'blog/novo_pedido.html', {'form':form})

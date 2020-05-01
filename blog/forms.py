@@ -4,4 +4,4 @@ from .models import Alzheimer
 class PostForm(ModelForm):
     class Meta:
         model = Alzheimer
-        fields = ['nome', 'imagem', 'slug', 'idade', 'sexo', 'autor']
+        fields = ['nome', 'imagem', 'idade', 'sexo', 'autor']
