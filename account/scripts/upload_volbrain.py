@@ -2,8 +2,6 @@
 import pytest
 import time
 import json
-import os
-os.environ['MOZ_HEADLESS'] = '1'
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -15,9 +13,12 @@ from selenium.webdriver.support.ui import Select
 
 
 
+
 class SegmentationVolbrain():
   def setup_method(self):
-    self.driver = webdriver.Chrome('chromedriver.exe')
+    options = webdriver.ChromeOptions()
+    options.add_argument("headless")
+    self.driver = webdriver.Chrome('chromedriver.exe', chrome_options=options)
     self.vars = {}
 
   def teardown_method(self):
