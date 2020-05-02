@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Alzheimer(models.Model):
     SEXO=(
-        ('F', 'Feminino'),
-        ('M', 'Masculino')
+        ('Female', 'Feminino'),
+        ('Male', 'Masculino')
     )
     STATUS=(
         ('0', 'Erro'),

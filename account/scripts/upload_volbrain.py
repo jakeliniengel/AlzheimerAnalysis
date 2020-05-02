@@ -13,7 +13,7 @@ from selenium.webdriver.support.ui import Select
 
 
 
-class TestTeste1():
+class SegmentationVolbrain():
   def setup_method(self):
     self.driver = webdriver.Chrome('chromedriver.exe')
     self.vars = {}
@@ -21,7 +21,7 @@ class TestTeste1():
   def teardown_method(self):
     self.driver.quit()
 
-  def test_teste1(self, dir, sexo, idade):
+  def submit_volbrain(self, dir, sexo, idade):
     self.driver.get("https://volbrain.upv.es/index.php")
     self.driver.set_window_size(1107, 680)
     self.driver.find_element(By.ID, "email").click()
@@ -31,7 +31,7 @@ class TestTeste1():
     self.driver.find_element(By.NAME, "sub").click()
     self.driver.find_element(By.ID, "pipeline4").click()
     self.driver.execute_script("document.getElementById('modality1').click()")
-    self.driver.find_element(By.ID, "hips_mt1_file").send_keys(dir_tratado)
+    self.driver.find_element(By.ID, "hips_mt1_file").send_keys(dir)
     self.driver.execute_script("document.getElementById('hips_patientssex_t1').click()")
     select = Select(self.driver.find_element_by_id("hips_patientssex_t1"))
     select.select_by_visible_text(sexo)
@@ -41,11 +41,3 @@ class TestTeste1():
     self.driver.find_element(By.ID, "protocol1_t1").click()
     self.driver.find_element(By.NAME, "button_hips_t1").click()
     time.sleep(100)
-
-dir="D:/Alzheimer/20-M-AD-MP-RAGE_10/ADNI/002_S_0816/MP-RAGE/2008-01-28_14_35_23.0/S45030/ADNI_002_S_0816_MR_MP-RAGE__br_raw_20080128222158020_1_S45030_I88804.zip"
-dir_tratado= dir.replace("\\", "/")
-sexo="Male"
-idade="86"
-teste = TestTeste1()
-teste.setup_method()
-teste.test_teste1(dir_tratado, sexo, idade)
