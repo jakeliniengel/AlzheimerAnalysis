@@ -43,8 +43,11 @@ def post_create(request):
             post_autor = form.cleaned_data['autor']
             new_post = Alzheimer(nome=post_nome, imagem=post_imagem, idade=post_idade,  sexo=post_sexo, autor=post_autor)
             new_post.save()
+            #Instancia class para início do selenium
             teste = SegmentationVolbrain()
+            #Chama função para configuração dop selenium 
             teste.setup_method()
+            #Inicia o processo de submissão na página do volbrain 
             teste.submit_volbrain(settings.BASE_DIR+ settings.MEDIA_URL+filename, post_sexo, post_idade)
             return redirect('blog:alzheimer_list')
     return render(request, 'blog/novo_pedido.html', {'form':form})
