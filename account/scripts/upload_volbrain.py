@@ -2,6 +2,11 @@
 import pytest
 import time
 import json
+import requests
+import zipfile
+import os
+import pandas as pd
+import csv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -10,26 +15,30 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import Select
-
+from django.conf import settings
 
 class SegmentationVolbrain():
   def setup_method(self):
     options = webdriver.ChromeOptions()
     options.add_argument("headless")
-    self.driver = webdriver.Chrome('chromedriver.exe', chrome_options=options)
+   # self.driver = webdriver.Chrome('chromedriver.exe', chrome_options=options)
+    self.driver = webdriver.Chrome('chromedriver.exe')
     self.vars = {}
 
   def teardown_method(self):
     self.driver.quit()
 
-  def submit_volbrain(self, dir, sexo, idade):
+  def submit_volbrain(self, dir, sexo, idade, filename):
+  #def submit_volbrain(self, filename):
+    print(dir)
     self.driver.get("https://volbrain.upv.es/index.php")
     self.driver.set_window_size(1107, 680)
     self.driver.find_element(By.ID, "email").click()
-    self.driver.find_element(By.ID, "email").send_keys("alzheimeranalysis@gmail.com")
+    self.driver.find_element(By.ID, "email").send_keys("")
     self.driver.find_element(By.ID, "password").click()
-    self.driver.find_element(By.ID, "password").send_keys("alzheimer123")
+    self.driver.find_element(By.ID, "password").send_keys("")
     self.driver.find_element(By.NAME, "sub").click()
+    
     self.driver.find_element(By.ID, "pipeline4").click()
     self.driver.execute_script("document.getElementById('modality1').click()")
     self.driver.find_element(By.ID, "hips_mt1_file").send_keys(dir)
@@ -41,4 +50,37 @@ class SegmentationVolbrain():
     self.driver.find_element(By.ID, "hips_patientsage_t1").send_keys(idade)
     self.driver.find_element(By.ID, "protocol1_t1").click()
     self.driver.find_element(By.NAME, "button_hips_t1").click()
-    time.sleep(100)
+    time.sleep(1200)
+    self.atualiza_pagina(filename)
+
+  def atualiza_pagina(self, filename):
+    table_list = []
+    print('entrou atualiza página')
+    self.driver.refresh()
+    try:
+      print('entrou no try')
+      file = self.driver.find_element(By.CSS_SELECTOR, "tr:nth-child(2) a:nth-child(1)").get_attribute('href')
+      r = requests.get(file,allow_redirects=True)
+      print('media\\resultado_'+filename)
+      open('media\\resultado_'+filename, 'wb').write(r.content)
+      with zipfile.ZipFile('media\\resultado_'+filename, 'r') as zip_ref:
+        path = 'media\\resultado_extract'+filename
+        os.mkdir(path,  0o755)
+        zip_ref.extractall(path)
+        for filename_csv in os.listdir(path):
+          if filename_csv.endswith('.csv'):
+            table_list.append(pd.read_csv(path+"\\"+filename_csv,sep=","))
+            print(table_list)
+          '''
+          with open(path+"\\"+filename_csv) as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+              print(row['CA1 right cm3'], row['CA1 left cm3'], row['CA2-CA3 right cm3'], row['CA2-CA3 left cm3'], row['Subiculum right cm3'], row['Subiculum left cm3'])
+              '''
+    except NameError:
+      print('entrou no except' +NameError)
+      time.sleep(180)
+      self.atualiza_pagina()
+    finally:
+      print('entrou no finally')
+
