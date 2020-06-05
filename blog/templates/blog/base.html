@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -45,7 +44,7 @@
     <div class="row">
 				{% if user.is_authenticated %}
 					<span class="logged-in-p">
-					Vocé	 está	 logado como <b>{{ user.username }}</b>.
+					Você	 está	 logado como <b>{{ user.username }}</b>.
 					</span>
 				{% endif %}
         {% block content %}

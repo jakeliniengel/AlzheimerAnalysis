@@ -11,10 +11,11 @@
 					<h5 class="card-title">{{ post.nome }}</h5>
 						<p>Nome do arquivo criado: {{post.imagem}}</p>
 						<p>
-						<a href="{{post.imagem}}" class="btn btn-primary" download>Download do arquivo </a>
 						{% if  post.status_seg == '2' %}
-							<a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-success">Ver Resultado</a>
-						{% elif post.status_seg == '1' %}
+							<strong>Probabilidade de ter a doença de Alzheimer: {{post.resultado_ad}}%</strong><br>
+							<strong>Cérebro saudável: {{post.resultado_cn}}%</strong><br>
+							<a href="#" class="btn btn-success">Ver Resultado</a>
+						{% elif post.status_seg == '1' %} 
 							<span class="btn btn-warning">Processando</span>
 					  {% elif post.status_seg == '0' %}
 							<span class="btn btn-danger">Erro</span>

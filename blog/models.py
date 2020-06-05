@@ -10,16 +10,19 @@ class Alzheimer(models.Model):
     STATUS=(
         ('0', 'Erro'),
         ('1', 'Processando'),
-        ('2', 'Consluído'),
+        ('2', 'Concluído'),
     )
     nome =models.CharField(max_length=200)
     imagem = models.FileField()
-    slug = models.SlugField()
+    slug = models.SlugField(default='')
     idade = models.DecimalField(max_digits=6, decimal_places=0)
     autor = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateField(auto_now_add=True)
     sexo = models.CharField(max_length=15, choices=SEXO)
     status_seg = models.CharField(max_length=20, choices=STATUS, default='1')
+    resultado_ad = models.DecimalField(max_digits=6, decimal_places=2, default='00.0')
+    resultado_cn = models.DecimalField(max_digits=6, decimal_places=2, default='00.0')
+    pdf_volbrain = models.CharField(max_length=2000,  default='')
 
 
 class Segmentation(models.Model):

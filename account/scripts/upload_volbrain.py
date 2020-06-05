@@ -16,27 +16,27 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import Select
 from django.conf import settings
-
+from account.scripts.classificacao import percentagemAlzheimer
 class SegmentationVolbrain():
   def setup_method(self):
     options = webdriver.ChromeOptions()
     options.add_argument("headless")
-   # self.driver = webdriver.Chrome('chromedriver.exe', chrome_options=options)
-    self.driver = webdriver.Chrome('chromedriver.exe')
+    self.driver = webdriver.Chrome('chromedriver.exe', chrome_options=options)
+    #self.driver = webdriver.Chrome('chromedriver.exe')
     self.vars = {}
 
   def teardown_method(self):
     self.driver.quit()
 
-  def submit_volbrain(self, dir, sexo, idade, filename):
+  def submit_volbrain(self, dir, sexo, idade, filename, id):
   #def submit_volbrain(self, filename):
     print(dir)
     self.driver.get("https://volbrain.upv.es/index.php")
     self.driver.set_window_size(1107, 680)
     self.driver.find_element(By.ID, "email").click()
-    self.driver.find_element(By.ID, "email").send_keys("")
+    self.driver.find_element(By.ID, "email").send_keys("alzheimeranalysis@gmail.com")
     self.driver.find_element(By.ID, "password").click()
-    self.driver.find_element(By.ID, "password").send_keys("")
+    self.driver.find_element(By.ID, "password").send_keys("alzheimer123")
     self.driver.find_element(By.NAME, "sub").click()
     
     self.driver.find_element(By.ID, "pipeline4").click()
@@ -51,10 +51,10 @@ class SegmentationVolbrain():
     self.driver.find_element(By.ID, "protocol1_t1").click()
     self.driver.find_element(By.NAME, "button_hips_t1").click()
     time.sleep(1200)
-    self.atualiza_pagina(filename)
+    self.atualiza_pagina(filename, id, sexo)
 
-  def atualiza_pagina(self, filename):
-    table_list = []
+  def atualiza_pagina(self, filename, id, sexo):
+    col_list = ["CA1 right cm3", "CA1 left cm3", "CA2-CA3 right cm3", "CA2-CA3 left cm3", "Subiculum right cm3", "Subiculum left cm3"]
     print('entrou atualiza página')
     self.driver.refresh()
     try:
@@ -62,6 +62,13 @@ class SegmentationVolbrain():
       file = self.driver.find_element(By.CSS_SELECTOR, "tr:nth-child(2) a:nth-child(1)").get_attribute('href')
       r = requests.get(file,allow_redirects=True)
       print('media\\resultado_'+filename)
+    except :
+      status = self.driver.find_element(By.CSS_SELECTOR, "tr:nth-child(2) > .par > img").get_attribute('src')
+      if(status!="img/job_error.png"):
+        time.sleep(180)
+        self.atualiza_pagina(filename, id, sexo)
+      print('entrou no except')
+    else:
       open('media\\resultado_'+filename, 'wb').write(r.content)
       with zipfile.ZipFile('media\\resultado_'+filename, 'r') as zip_ref:
         path = 'media\\resultado_extract'+filename
@@ -69,18 +76,16 @@ class SegmentationVolbrain():
         zip_ref.extractall(path)
         for filename_csv in os.listdir(path):
           if filename_csv.endswith('.csv'):
-            table_list.append(pd.read_csv(path+"\\"+filename_csv,sep=","))
-            print(table_list)
-          '''
-          with open(path+"\\"+filename_csv) as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-              print(row['CA1 right cm3'], row['CA1 left cm3'], row['CA2-CA3 right cm3'], row['CA2-CA3 left cm3'], row['Subiculum right cm3'], row['Subiculum left cm3'])
-              '''
-    except NameError:
-      print('entrou no except' +NameError)
-      time.sleep(180)
-      self.atualiza_pagina()
-    finally:
-      print('entrou no finally')
+            leitura = pd.read_csv(path+"\\"+filename_csv,usecols=col_list, sep=';')
+            #json_teste = pd.to_json(path+"\\"+filename+".json")
+            #print(json_teste)
+            ca1_r = float(leitura["CA1 right cm3"])
+            ca1_l = float(leitura["CA1 left cm3"])
+            ca2ca3_r = float(leitura["CA2-CA3 right cm3"])
+            ca2ca3_l = float(leitura["CA2-CA3 right cm3"])
+            sub_r = float(leitura["Subiculum right cm3"])
+            sub_l = float(leitura["Subiculum left cm3"])
+            verificar_valores = percentagemAlzheimer()
+            verificar_valores.functionProcessamento(ca1_r= ca1_r, ca1_l= ca1_l, ca2_ca3_r=ca2ca3_r, ca2_ca3_l=ca2ca3_l, sub_l=sub_l, sub_r=sub_r, sexo=sexo)
+
 

@@ -1,14 +1,31 @@
 {% extends 'blog/base.html' %}
+{% load static%}
 {% block title %}Exames{% endblock %}
 {% block content %}
 <div class="container inserir_pedido">
 	<h2>Inserir arquivo para avaliação</h2>
 	<div>
+		<!-- Modal -->
+		<div class="modal fade" id="modalCarregando" tabindex="-1" role="dialog" aria-labelledby="modalCarregandoLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalCarregandoLabel">Aguarde enquanto a imagem &eacute; processada</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						</button>
+					</div>
+					<div class="modal-body text-center">
+						  <img src="{% static 'img/processando.gif' %}" alt="gif carregando" class="img-fluid"/>
+							<label>O tempo de processamento pode variar de 20 a 30 minutos, quando concluí	do você será direcionado para a página de reultados. Por favor aguarde!</label>
+					</div>
+				</div>
+			</div>
+		</div>
 		<form action="." method="POST" enctype="multipart/form-data" class="pedido">
 			{% csrf_token %}
 			{{ form }}
 			<p>
-				<input type="submit" class="btn btn-primary" value="Criar">
+				<input type="submit" class="btn btn-primary" value="Submeter"  data-toggle="modal" data-target="#modalCarregando">
 			</p>
 		</form>
 	</div>
