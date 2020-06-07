@@ -17,6 +17,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import Select
 from django.conf import settings
 from account.scripts.classificacao import percentagemAlzheimer
+from blog.models import Alzheimer
 class SegmentationVolbrain():
   def setup_method(self):
     options = webdriver.ChromeOptions()
@@ -30,6 +31,7 @@ class SegmentationVolbrain():
 
   def submit_volbrain(self, dir, sexo, idade, filename, id):
   #def submit_volbrain(self, filename):
+    
     print(dir)
     self.driver.get("https://volbrain.upv.es/index.php")
     self.driver.set_window_size(1107, 680)
@@ -38,21 +40,23 @@ class SegmentationVolbrain():
     self.driver.find_element(By.ID, "password").click()
     self.driver.find_element(By.ID, "password").send_keys("alzheimer123")
     self.driver.find_element(By.NAME, "sub").click()
-    
-    self.driver.find_element(By.ID, "pipeline4").click()
-    self.driver.execute_script("document.getElementById('modality1').click()")
-    self.driver.find_element(By.ID, "hips_mt1_file").send_keys(dir)
-    self.driver.execute_script("document.getElementById('hips_patientssex_t1').click()")
-    select = Select(self.driver.find_element_by_id("hips_patientssex_t1"))
-    select.select_by_visible_text(sexo)
-    self.driver.find_element(By.ID, "hips_patientssex_t1").click()
-    self.driver.find_element(By.ID, "hips_patientsage_t1").click()
-    self.driver.find_element(By.ID, "hips_patientsage_t1").send_keys(idade)
-    self.driver.find_element(By.ID, "protocol1_t1").click()
-    self.driver.find_element(By.NAME, "button_hips_t1").click()
-    time.sleep(1200)
-    self.atualiza_pagina(filename, id, sexo)
 
+    try:
+      self.driver.find_element(By.ID, "pipeline4").click()
+      self.driver.execute_script("document.getElementById('modality1').click()")
+      self.driver.find_element(By.ID, "hips_mt1_file").send_keys(dir)
+      self.driver.execute_script("document.getElementById('hips_patientssex_t1').click()")
+      select = Select(self.driver.find_element_by_id("hips_patientssex_t1"))
+      select.select_by_visible_text(sexo)
+      self.driver.find_element(By.ID, "hips_patientssex_t1").click()
+      self.driver.find_element(By.ID, "hips_patientsage_t1").click()
+      self.driver.find_element(By.ID, "hips_patientsage_t1").send_keys(idade)
+      self.driver.find_element(By.ID, "protocol1_t1").click()
+      self.driver.find_element(By.NAME, "button_hips_t1").click()
+      time.sleep(1200)
+      self.atualiza_pagina(filename, id, sexo)
+    except:
+      return (404)
   def atualiza_pagina(self, filename, id, sexo):
     col_list = ["CA1 right cm3", "CA1 left cm3", "CA2-CA3 right cm3", "CA2-CA3 left cm3", "Subiculum right cm3", "Subiculum left cm3"]
     print('entrou atualiza página')
@@ -67,13 +71,22 @@ class SegmentationVolbrain():
       if(status!="img/job_error.png"):
         time.sleep(180)
         self.atualiza_pagina(filename, id, sexo)
-      print('entrou no except')
+      else:
+        alzheimer = Alzheimer.objects.get(id=id)
+        alzheimer.pdf_volbrain = 0
+        alzheimer.save()
+        return (-1)
     else:
       open('media\\resultado_'+filename, 'wb').write(r.content)
       with zipfile.ZipFile('media\\resultado_'+filename, 'r') as zip_ref:
         path = 'media\\resultado_extract'+filename
         os.mkdir(path,  0o755)
         zip_ref.extractall(path)
+        for filename_pdf in os.listdir(path):
+          if(filename_pdf.endswith('.pdf')):
+            alzheimer = Alzheimer.objects.get(id=id)
+            alzheimer.pdf_volbrain = settings.MEDIA_URL+"\\resultado_extract"+filename+"\\"+filename_pdf
+            alzheimer.save()
         for filename_csv in os.listdir(path):
           if filename_csv.endswith('.csv'):
             leitura = pd.read_csv(path+"\\"+filename_csv,usecols=col_list, sep=';')
@@ -86,6 +99,6 @@ class SegmentationVolbrain():
             sub_r = float(leitura["Subiculum right cm3"])
             sub_l = float(leitura["Subiculum left cm3"])
             verificar_valores = percentagemAlzheimer()
-            verificar_valores.functionProcessamento(ca1_r= ca1_r, ca1_l= ca1_l, ca2_ca3_r=ca2ca3_r, ca2_ca3_l=ca2ca3_l, sub_l=sub_l, sub_r=sub_r, sexo=sexo)
-
+            verificar_valores.functionProcessamento(ca1_r= ca1_r, ca1_l= ca1_l, ca2_ca3_r=ca2ca3_r, ca2_ca3_l=ca2ca3_l, sub_l=sub_l, sub_r=sub_r, sexo=sexo, id=id)
+            return (0)
 

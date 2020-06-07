@@ -32,7 +32,7 @@ def post_detail(request, slug):
 @login_required
 def post_create(request):
     form = PostForm()
-
+    retorno=0
     if(request.method == 'POST'):
         form = PostForm(request.POST, request.FILES)
         user = request.user
@@ -44,7 +44,7 @@ def post_create(request):
             post_idade =  int(form.cleaned_data['idade'])
             post_sexo = form.cleaned_data['sexo']
             post_autor = user
-            post_status_seg = 2
+            post_status_seg = 1
              #Salva no banco de dados
             new_post = Alzheimer(nome=post_nome, imagem=post_imagem, idade=post_idade,  sexo=post_sexo, autor=post_autor,  status_seg=post_status_seg)
             new_post.save()
@@ -55,6 +55,9 @@ def post_create(request):
             #Chama função para configuração dop selenium 
             teste.setup_method()
             #Inicia o processo de submissão na página do volbrain 
-            teste.submit_volbrain(settings.BASE_DIR+ settings.MEDIA_URL+filename, post_sexo, post_idade, filename, id_post)
-            return redirect('blog:alzheimer_list')
+            retorno = teste.submit_volbrain(settings.BASE_DIR+ settings.MEDIA_URL+filename, post_sexo, post_idade, filename, id_post)
+            if retorno==404:
+                return render(request, 'blog/novo_pedido.html', {'form':form, 'retorno':retorno})
+            else:
+                return redirect('blog:alzheimer_list')
     return render(request, 'blog/novo_pedido.html', {'form':form})

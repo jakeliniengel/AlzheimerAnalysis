@@ -12,7 +12,6 @@ urlpatterns = [
     path('<slug:slug>', views.post_detail, name='post_detail'),
     path('novo_pedido/', views.post_create, name='novo_pedido'),
     path('alzheimer_list/', views.alzheimer_list, name='alzheimer_list'),
-    path('accounts/profile/', views.alzheimer_list, name='alzheimer_list'),
     #path('account/logout/', views.post_list, name='post_list'),
 ]+ static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

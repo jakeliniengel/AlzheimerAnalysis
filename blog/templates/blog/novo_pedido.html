@@ -27,7 +27,12 @@
 			<p>
 				<input type="submit" class="btn btn-primary" value="Submeter"  data-toggle="modal" data-target="#modalCarregando">
 			</p>
+			{%if retorno == 404 %}
+				<label class="text-danger">Você já submeteu o máximo arquivos permitido por dia.</label>
+			{% endif %}
 		</form>
+	
+			
 	</div>
 
 </div>
